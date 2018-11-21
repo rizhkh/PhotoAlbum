@@ -3,10 +3,13 @@ package controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -19,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 
 public class LoginController {
 
@@ -34,10 +38,13 @@ public class LoginController {
 	 */
 	private String user = null;
 	private String pass = null;
+	public static String useruser = "";
 	
 	private Stage currentScene;
 	private Scene newScene;
 	FXMLLoader loader;
+	
+	
 	
 	
 	/*
@@ -65,6 +72,7 @@ public class LoginController {
 	        }
 			user = userName.getText();
 			pass = password.getText();
+			useruser = user;
 		}
 		
 		//begin to scan the login file to check for existence
@@ -93,6 +101,7 @@ public class LoginController {
 			userPass = 0;
 			scan.close();
 		}
+		userData.close();
 		
 		//IGNORE, ERROR CHECKING
 		for (int i = 0; i < x.size(); i++){
@@ -103,12 +112,15 @@ public class LoginController {
 			System.out.println("Y[" + i + "]: " + y.get(i));
 		}
 		
+		boolean passCheck = false;//to check if the info matches anything
+		
 		//check if user is admin or regular
 		for (int i  = 0; i < x.size(); i++){
 			if (user.equals(x.get(i))){
 				if (pass.equals(y.get(i))){
 					//user and pass match
 					if (user.equals("admin")){
+						passCheck = true;
 						//GO TO ADMIN SUBSYSTEM
 						System.out.println("Good");//TESTING PURPOSES
 						
@@ -120,22 +132,59 @@ public class LoginController {
 						newScene = new Scene(root,600,400);
 						newScene.getStylesheets().add(getClass().getResource("/app/application.css").toExternalForm());
 						currentScene.setScene(newScene);
+						
+						AdminController controller = loader.getController();
+						
+						currentScene.setOnHidden(e12 -> {
+							try {
+								controller.shutdown();
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							Platform.exit();
+						});
+						
 						currentScene.show();
+						break;
 					}else{
 						//GO TO USER SUBSYSTEM
 						System.out.println("Bad");//TESTING PURPOSES
+						
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/view/albumView.FXML"));
+						
+						currentScene = (Stage) b.getScene().getWindow();
+						AnchorPane root = (AnchorPane)loader.load();
+						newScene = new Scene(root,600,400);
+						newScene.getStylesheets().add(getClass().getResource("/app/application.css").toExternalForm());
+						currentScene.setScene(newScene);
+						
+						albumViewController controller = loader.getController();
+						controller.setUserName(user);
+						currentScene.show();
+						
+						passCheck = true;
+						break;
 					}
 				}else{
-					System.out.println("Password is incorrect");
 				}
 			}else{
-				System.out.println("Username is incorrect");
+				
 			}
-			
-			//clear the arrays to avoid confusion in next read in
-			x.clear();
-			y.clear();
 		}
-		userData.close();
+		
+		//nothing matched in the array, error message
+		if (passCheck == false){
+			System.out.println("Username/Password is incorrect");
+			Alert alert = new Alert(AlertType.ERROR);
+	        alert.setTitle("Incorrect Info");
+	    	alert.setHeaderText("The username/password combo is incorrect");
+	    	alert.showAndWait();
+		}
+		
+		//clear the arrays to avoid confusion in next read in
+		x.clear();
+		y.clear();
 	}
 }
