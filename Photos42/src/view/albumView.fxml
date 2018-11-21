@@ -6,11 +6,11 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.albumViewController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -27,12 +27,18 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="255.0" prefWidth="256.0" spacing="10.0">
                      <children>
-                        <Label text="Album List">
-                           <font>
-                              <Font name="System Bold Italic" size="13.0" />
-                           </font>
-                        </Label>
-                        <ListView prefHeight="200.0" prefWidth="200.0" />
+                        <Pane prefHeight="26.0" prefWidth="246.0">
+                           <children>
+                              <Label layoutX="90.0" layoutY="4.0" text="Album List">
+                                 <font>
+                                    <Font name="System Bold Italic" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Button id="next" layoutX="196.0" layoutY="1.0" mnemonicParsing="false" onAction="#next" text="Next" />
+                              <Button id="prev" layoutX="11.0" layoutY="1.0" mnemonicParsing="false" onAction="#prev" text="Prev" />
+                           </children>
+                        </Pane>
+                        <ListView fx:id="albumList" onMouseClicked="#mouseAlbumList" prefHeight="200.0" prefWidth="200.0" />
                      </children>
                      <padding>
                         <Insets left="10.0" />
@@ -46,7 +52,7 @@
                            </font>
                         </Label>
                         <ListView prefHeight="200.0" prefWidth="200.0" />
-                        <Button mnemonicParsing="false" text="Explore Album" />
+                        <Button id="exploreAlbum" mnemonicParsing="false" onAction="#exploreAlbum" text="Explore Album" />
                      </children>
                      <padding>
                         <Insets top="15.0" />
@@ -58,13 +64,18 @@
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="94.0" prefWidth="262.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Create Album" />
-                        <Button mnemonicParsing="false" text="Delete Album" />
-                     </children>
+                        <Pane prefHeight="94.0" prefWidth="250.0"> 
+                           <children>
+                              <Button id="createAlbum" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#createAlbum" text="Create Album" />
+                              <Button id="delete" layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#delete" text="Delete Album" />
+                               <Button id="renameAlbum" onAction="#renameAlbum" layoutX="125.0" layoutY="14.0" mnemonicParsing="false" text="Rename Album" />
+                           </children>
+                        </Pane>
+                     </children>  
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="94.0" prefWidth="293.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Logout" translateX="-35.0" />
+                        <Button id="logOut" onAction="#logOut"  mnemonicParsing="false" text="Logout" translateX="-35.0" />
                      </children>
                      <opaqueInsets>
                         <Insets />

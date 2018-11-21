@@ -45,7 +45,7 @@
                            <font>
                               <Font name="System Bold Italic" size="15.0" />
                            </font>
-                        </Label>
+                        </Label> 
                         <PasswordField fx:id="password" />
                      </children>
                   </HBox>
