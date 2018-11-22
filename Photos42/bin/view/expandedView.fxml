@@ -7,16 +7,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Font?> 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.expandedViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.expandedViewController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <HBox alignment="CENTER" prefHeight="61.0" prefWidth="600.0">
                <children>
-                  <Label text="Expanded View">
+                  <Label prefHeight="47.0" prefWidth="320.0" text="         Expanded View">
                      <font>
                         <Font name="System Bold Italic" size="32.0" />
                      </font>
@@ -27,18 +28,19 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="290.0" spacing="10.0" translateX="10.0">
                      <children>
-                        <Label text="Your Photots">
-                           <font>
-                              <Font name="System Bold Italic" size="13.0" />
-                           </font>
-                        </Label>
+                        <Pane prefHeight="5.0" prefWidth="290.0">
+                           <children>
+                              <Button id="next" layoutX="11.0" layoutY="-6.0" mnemonicParsing="false" onAction="#next" prefHeight="25.0" prefWidth="61.0" text="Next" />
+                              <Button id="prev" layoutX="77.0" layoutY="-6.0" mnemonicParsing="false" onAction="#prev" prefHeight="25.0" prefWidth="61.0" text="Prev" />
+                           </children>
+                        </Pane>
                         <ListView fx:id="photosList" onMouseClicked="#mousephotosList" prefHeight="200.0" prefWidth="200.0" />
                         <HBox alignment="CENTER" prefHeight="34.0" prefWidth="273.0" spacing="10.0">
                            <children>
                               <Button id="add" fx:id="adp" mnemonicParsing="false" onAction="#add" text="Add Photo" />
-                              <Button mnemonicParsing="false" text="Delete Photo" />
+                              <Button id="delete" mnemonicParsing="false" onAction="#delete" text="Delete Photo" />
                            </children>    
-                        </HBox>
+                        </HBox> 
                      </children>
                   </VBox> 
                   <VBox alignment="CENTER" prefHeight="275.0" prefWidth="273.0" translateY="-23.0">
@@ -47,15 +49,20 @@
                         <Label text="Photo Details">
                            <font>
                               <Font name="System Bold Italic" size="13.0" />
-                           </font>
+                           </font>  
                         </Label>
-                        <ListView prefHeight="72.0" prefWidth="255.0" translateY="8.0" />
+                        <ListView fx:id="photosListDetail" onMouseClicked="#mousephotosListDetail" prefHeight="115.0" prefWidth="274.0" translateY="8.0" />
                         <HBox alignment="CENTER" prefHeight="34.0" prefWidth="273.0" spacing="10.0" translateY="20.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Edit Info" />
-                           </children>
+                              <Pane prefHeight="34.0" prefWidth="258.0">
+                                 <children>
+                                    <Button id="copyImage" layoutX="14.0" layoutY="1.0" mnemonicParsing="false" onAction="#copyImage" text="Copy Image" />
+                                    <Button id="moveImage" layoutX="123.0" layoutY="1.0" mnemonicParsing="false" onAction="#moveImage" text="Move Image" />
+                                 </children>
+                              </Pane>
+                           </children> 
                         </HBox>
-                     </children>
+                     </children> 
                      <padding>
                         <Insets top="25.0" />
                      </padding>
@@ -64,11 +71,18 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="600.0" spacing="10.0" translateY="10.0">
                <children>
-                  <Button mnemonicParsing="false" text="Album View" translateX="25.0" />
-                  <Button mnemonicParsing="false" text="Logout" translateX="425.0" />
+                  <Pane prefHeight="47.0" prefWidth="613.0">
+                     <children>
+                        <Button id="albumView" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#albumView" text="Album View" />
+                        <Button id="displayImage" layoutX="120.0" layoutY="10.0" mnemonicParsing="false" onAction="#displayImage" text="Display Image" />
+                     </children>
+                  </Pane>
                </children>
             </HBox>
          </children>
       </VBox>
+      <Button id="logOut" layoutX="613.0" layoutY="367.0" mnemonicParsing="false" onAction="#logOut" text="Logout" />
+      <Button id="addCaption" layoutX="588.0" layoutY="174.0" mnemonicParsing="false" onAction="#addCaption" text="Add Caption" />
+      <Button id="addTags" layoutX="588.0" layoutY="216.0" mnemonicParsing="false" onAction="#addTags" text="Add tags" />
    </children>
 </AnchorPane>

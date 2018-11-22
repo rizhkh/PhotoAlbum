@@ -21,7 +21,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import controller.AdminController.loginInfo;
+ 
+import app.LoginInfo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,6 +42,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Displays all albums created by users. Allows the creation of new
+ * albums and the deletion of albums. Stores the data entered by 
+ * serializing the path names into their respective user folders.
+ * @author Rizwan Khan(mrk150) && Ahmed Ghoneim(asg179)
+ *
+ */
 public class albumViewController implements Initializable,Serializable {
 
 	private Stage currentScene;
@@ -76,26 +84,30 @@ public class albumViewController implements Initializable,Serializable {
 	ObservableList<String> albumsListObs = FXCollections.observableArrayList(albumnameList);
 
 	//*** CREATES NEW ALBUM AND DISPLAYS IN LIST
+	static String pathString = "";
 	
+	/**
+	 * Creates a new album and displays it in the list of albums. Serializes the album
+	 * info into the user created folder.
+	 * @param event Pushing "Create Album" button
+	 * @throws IOException
+	 */
 	@FXML public void createAlbum(ActionEvent event) throws IOException 
 	{
-		System.out.println(getUserName());
+		//ln(getUserName());
 		int check=0;
 		String res = "";
-		System.out.println(" <ALBUM VIEW> ");
 		String currentUserName = "Album";	// <---------------------------		
 		
 		
 		String currentpath = System.getProperty("user.dir");
-		System.out.println("current path is:" + currentpath);
 		currentpath = currentpath + "\\";
 		currentpath = currentpath.replace("\\", "/");
 		
 		
 		String strDirectoy = "CreatedUsers/"+ getUserName() + "/Album";///////// <---**************->
 		serFolderLoc = currentpath + strDirectoy + "/";
-
-		System.out.println("%%%%%%%%%%%%%%%%%%%%% " + serFolderLoc);
+		pathString = serFolderLoc;
 		
 		//POP UP THAT ASKS FOR ALBUM NAME
 		TextInputDialog dialog = new TextInputDialog("Enter Album name");
@@ -116,15 +128,12 @@ public class albumViewController implements Initializable,Serializable {
 		currentAlbum = serFolderLoc;
 		
 		serFolderLoc = serFolderLoc.replace("/", "\\");
-		System.out.println("current path is $$ " + serFolderLoc);
 		
 		//serFolderLoc	
 		File pathOfDirectory = new File(serFolderLoc);
 		boolean pathDirExist = pathOfDirectory.exists();
 
-		System.out.println("serFolderLoc path is $$ " + serFolderLoc);
-		System.out.println("currentpath path is $$ " + currentpath);	
-		
+		int index = 0;
 		if(pathDirExist)
 		{ 
 			Alert alert = new Alert(AlertType.ERROR);
@@ -140,6 +149,7 @@ public class albumViewController implements Initializable,Serializable {
 			res = nameMaker(currentAlbum);
 			albumnameList.add(res); //<---- adds name in arraylist
 			albumList.getItems().add(res); //<-- adds name in list view
+			index = albumnameList.indexOf(res);
 			albumsListObs = FXCollections.observableArrayList(albumnameList);
 			
 			String AlbumListser = sss + "/" + "AlbumList.ser";
@@ -150,9 +160,15 @@ public class albumViewController implements Initializable,Serializable {
 			serializingPaths(AlbumListser,AlbumListNameser);
 			//albumnameList.add(res);
 		}
+
 	}
 	
 	//*** TO SERIALIZE THE PATHS OF THE CREATED ALBUMS
+	/**
+	 * Serializes the paths of the created albums
+	 * @param loc The album name
+	 * @param locName The album path, usually the working directory
+	 */
 	public void serializingPaths(String loc,String locName)
 	{
 		try{
@@ -173,6 +189,11 @@ public class albumViewController implements Initializable,Serializable {
 	
 	//*** HELPER METHOD THAT RETURNS THE PATH OF THE ALBUM
 	//This method returns the path of the album/folder 
+	/**
+	 * Helper method to return the path of the created album
+	 * @param z The name of the album
+	 * @return The path of the requested album
+	 */
 	public String getAlbumPath(String z){
 		String pathh = "";
 		int index = albumnameList.indexOf(z);
@@ -181,6 +202,11 @@ public class albumViewController implements Initializable,Serializable {
 	}
 
 	//*** HELPER METHOD FOR ALBUM CREATION - RETURNS NAMES
+	/**
+	 * Helper method to create albums. 
+	 * @param filename The file where albums are stored
+	 * @return Name of the album to store
+	 */
 	public String nameMaker(String filename){
 		int spot = 0;
 		for(int i=0; i <filename.length() ;i++) {
@@ -209,11 +235,13 @@ public class albumViewController implements Initializable,Serializable {
 
 	//unserializes data to update from other folders
 
-	
+	/**
+	 * Deseriaizes any previously stored album data for the current user.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		LoginController a = new LoginController();
-		System.out.println("Current User: " + a.useruser);
+		//ln("Current User: " + a.useruser);
 		String loc =serFolderLoc2 + "/CreatedUsers" + "/"+ a.useruser + "" + "/Album" + "/AlbumList.ser";//serFolderLoc + "\\path.ser";
 		String locName = serFolderLoc2 + "/CreatedUsers" + "/"+ a.useruser + "" + "/Album" + "/AlbumListName.ser" ;//serFolderLoc+"\\pathName.ser";
 		
@@ -221,11 +249,9 @@ public class albumViewController implements Initializable,Serializable {
 		
 		loc = loc.replace("/", "\\");
 		locName = locName.replace("/", "\\");
-		
-		System.out.println(loc);
+
 		File aaa = new File(loc);
 		if(aaa.exists()){
-			System.out.println("exists ^^^^^^^^^^^^^^^^^^^^^^^" + loc);
 			try{
 		          FileInputStream fileIn =new FileInputStream(loc);
 		          FileInputStream fileIn2 =new FileInputStream(locName);
@@ -233,8 +259,7 @@ public class albumViewController implements Initializable,Serializable {
 		          ObjectInputStream in2 = new ObjectInputStream(fileIn2);
 		          albumnameListPath = (ArrayList<String>) in.readObject();
 		          albumnameList = (ArrayList<String>) in2.readObject(); 
-		          System.out.println(albumnameListPath);
-		          System.out.println(albumnameList);
+
 		          albumsListObs = FXCollections.observableArrayList(albumnameList);	
 		          albumList.setItems(albumsListObs);   
 		          in.close();
@@ -250,8 +275,9 @@ public class albumViewController implements Initializable,Serializable {
 			}
 		}	
 
-		//System.out.println(albumnameList);
-		if(!albumnameList.isEmpty()){
+		////ln(albumnameList);
+		if(!albumnameList.isEmpty())
+		{
 			albumsListObs = FXCollections.observableArrayList(albumnameList);
 			albumList.getSelectionModel().select(0);
 			//albumList.getSelectionModel().select(0);
@@ -263,30 +289,33 @@ public class albumViewController implements Initializable,Serializable {
 	} 
  
 	//*** DELETES SELECTED FOLDER AND THINGS INSIDE IT
+	/**
+	 * Deletes the selected album and everything in it.
+	 */
 	@FXML public void delete(ActionEvent event) throws IOException { 
 		int index = albumList.getSelectionModel().getSelectedIndex();
-		System.out.println("Index of album " + index);
+
 		int pathfordel = index;
 		String curFile = albumnameListPath.get(pathfordel);
 		String curFileName = albumnameList.get(pathfordel);
-		System.out.println("File: " + curFile );
+
 		File cp = new File(curFile);//=  file.getParentFile();
-		System.out.println(cp);
+
 		  
 		String rem = curFile + ";" + curFileName + ";";
 		if(cp.isDirectory() && cp.list().length == 0 ) {
-		   System.out.println("Directory is empty");
+
 		   cp.delete();
-		   System.out.println("Directory deleted!");
+
 		   albumnameList.remove(pathfordel);
 		   albumnameListPath.remove(pathfordel);
 		   albumList.getItems().remove(pathfordel);
 		   albumsListObs = FXCollections.observableArrayList(albumnameList); 
 		} else {
-			 System.out.println("Directory is not empty");
+
 			 File[] listFiles = cp.listFiles();
 				for(File file : listFiles){
-					System.out.println("Deleting "+file.getName());
+
 					file.delete();}
 					cp.delete();
 					albumnameList.remove(pathfordel);
@@ -294,10 +323,22 @@ public class albumViewController implements Initializable,Serializable {
 				    albumList.getItems().remove(pathfordel);
 					albumsListObs = FXCollections.observableArrayList(albumnameList);
 		}  
-		serializingPaths("AlbumList.ser","AlbumListName.ser");
+		
+		String a1 = pathString + "\\" + "AlbumList.ser";
+		String a2 = pathString + "\\" + "AlbumListName.ser";
+		
+		if(albumnameListPath.size()<=0) {albumnameListPath.clear();
+		albumnameList.clear();
+		}
+		
+		serializingPaths(a1,a2);
     }	
 
 	//*** RENAMES ALBUM
+	/**
+	 * Renames the selected album
+	 * @param event Pushing "Rename Album" button
+	 */
 	@FXML public void renameAlbum(ActionEvent event) { 
 		//POP UP THAT ASKS FOR ALBUM NAME
 		TextInputDialog dialog = new TextInputDialog("Enter a new Album name");
@@ -311,11 +352,11 @@ public class albumViewController implements Initializable,Serializable {
 		    albumNamePath = result.get();   
 		}
 		String newN1 = currentSelectedFolderPath + "/" + albumNamePath;
-		System.out.println("  Sadd " + currentSelectedFolderPath);
+
 		File dir = new File(currentSelectedFolderPath);
         File newName = new File(newN1);
         if ( dir.isDirectory() ) {
-        	System.out.println("yes");
+ 
                 dir.renameTo(newName); 
         }
         
@@ -330,24 +371,35 @@ public class albumViewController implements Initializable,Serializable {
     }
 
 	//*** SELECTS NEXT ALBUM
+	/**
+	 * Selects the next album in the list of albums
+	 * @param event Pushing "Next" button
+	 */
 	@FXML public void next(ActionEvent event) { 
 		if(currentSelectedIndex<albumnameList.size()){
 			albumList.getSelectionModel().select(currentSelectedIndex+1);
 			autoselectt();
-			albumsListObs = FXCollections.observableArrayList(albumnameList);
+			//albumsListObs = FXCollections.observableArrayList(albumnameList);
 			}
     }
 	
 	//*** SELECTS PREVIOUS ALBUM
+	/**
+	 * Selects the previous album in the list of albums
+	 * @param event Pushing "Prev" Button
+	 */
 	@FXML public void prev(ActionEvent event) { 
 		if(currentSelectedIndex>0){
 			albumList.getSelectionModel().select(currentSelectedIndex-1);
 			autoselectt();
-			albumsListObs = FXCollections.observableArrayList(albumnameList);
+			//albumsListObs = FXCollections.observableArrayList(albumnameList);
 			}
     }	
 
 	//*** HELPER METHOD FOR SELECTION
+	/**
+	 * Auto Selects albums from album list
+	 */
 	public void autoselectt(){
 		int index = albumList.getSelectionModel().getSelectedIndex();
 		currentSelectedFolderPath = albumnameListPath.get(index); 		
@@ -358,6 +410,10 @@ public class albumViewController implements Initializable,Serializable {
 	} 
 
 	//*** HELPER METHOD TO GET THE CURRENTLY SELECTED PATH OF ALBUM
+	/**
+	 * Helper method to return the path of the currently selected album
+	 * @return String -- the current path
+	 */
 	public static String getPath(){
 		return currentSelectedFolderPath;
 	}
@@ -365,13 +421,19 @@ public class albumViewController implements Initializable,Serializable {
 	
 	//***RETRIEVE INFO OF THE SELECTED ALBUM FROM THE LSIT
 	//THIS IS WHEN YOU CLICK ON A LIST ITEM IN LISTVIEW
+	/**
+	 * Retrieves the relevant info for a specific album and displays it
+	 * whenever an album is selected from the list of albums.
+	 * @param event Using mouse to click on album
+	 * @throws IOException
+	 */
 	@FXML
 	public void mouseAlbumList(MouseEvent event) throws IOException{
 		int index = albumList.getSelectionModel().getSelectedIndex();
 		currentSelectedIndex = index;
 		strngFP = albumnameList.get(index);
 		currentSelectedFolderPath = albumnameListPath.get(index); 
-		System.out.println("path: " + strngFP);
+
 
         albumsListObs = FXCollections.observableArrayList(albumnameList);
 		if( event.getSource() == albumList ){
@@ -381,33 +443,61 @@ public class albumViewController implements Initializable,Serializable {
 	}
 	
 	//*** THIS SETS THE STAGE TO A NEW SCENE
+	/**
+	 * Opens new scene to view all the photos in the currently 
+	 * selected album
+	 * @param event Pushing "Explore Album" Button
+	 * @throws IOException
+	 */
 	@FXML public void exploreAlbum(ActionEvent event) throws IOException { 
-		Button b = (Button)event.getSource();
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/view/expandedView.FXML"));
 		
-		currentScene = (Stage) b.getScene().getWindow();
-		AnchorPane root = (AnchorPane)loader.load();
-		newScene = new Scene(root,600,400);
-		newScene.getStylesheets().add(getClass().getResource("/app/application.css").toExternalForm());
-		currentScene.setScene(newScene);
-		currentScene.show();			
+		if(albumnameListPath.size()>=1)
+		{		
+			Button b = (Button)event.getSource();
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/view/expandedView.FXML"));
+			
+			currentScene = (Stage) b.getScene().getWindow();
+			AnchorPane root = (AnchorPane)loader.load();
+			newScene = new Scene(root,700,400);
+			newScene.getStylesheets().add(getClass().getResource("/app/application.css").toExternalForm());
+			currentScene.setScene(newScene);
+			currentScene.show();				
+		}
+	
     }
 	
 	//returns who is the current user for this particular albumView
+	/**
+	 * Helper method to return the current user from the previous
+	 * controller class
+	 * @return The current user
+	 */
 	public String getUserName(){
 		return this.userName;
 	}
 	
 	//receives the current user from the LoginController class
+	/**
+	 * Helper method to set the current user from the previous 
+	 * controller class
+	 * @param user The current user to set
+	 */
 	public void setUserName(String user){
-		System.out.println("In here");
+
 		this.userName = user;
 	}
 	
 	//***LOGS OUT
+	/**
+	 * Logs out from the current session. 
+	 * @param event Pushing "Logout" Button
+	 * @throws IOException
+	 */
 	@FXML public void logOut(ActionEvent event) throws IOException 
     { 
+		LoginController a = new LoginController();
+		a.useruser = "";
 		Button b = (Button)event.getSource();
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/view/login.FXML"));

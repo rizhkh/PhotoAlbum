@@ -9,15 +9,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Font?> 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.expandedViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.expandedViewController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
             <HBox alignment="CENTER" prefHeight="61.0" prefWidth="600.0">
                <children>
-                  <Label text="Expanded View">
+                  <Label prefHeight="47.0" prefWidth="320.0" text="         Expanded View">
                      <font>
                         <Font name="System Bold Italic" size="32.0" />
                      </font>
@@ -32,7 +32,6 @@
                            <children>
                               <Button id="next" layoutX="11.0" layoutY="-6.0" mnemonicParsing="false" onAction="#next" prefHeight="25.0" prefWidth="61.0" text="Next" />
                               <Button id="prev" layoutX="77.0" layoutY="-6.0" mnemonicParsing="false" onAction="#prev" prefHeight="25.0" prefWidth="61.0" text="Prev" />
-                              <Button id="search" layoutX="195.0" layoutY="-6.0" mnemonicParsing="false" onAction="#search" text="Search" />
                            </children>
                         </Pane>
                         <ListView fx:id="photosList" onMouseClicked="#mousephotosList" prefHeight="200.0" prefWidth="200.0" />
@@ -50,19 +49,18 @@
                         <Label text="Photo Details">
                            <font>
                               <Font name="System Bold Italic" size="13.0" />
-                           </font> 
+                           </font>  
                         </Label>
-                        <ListView prefHeight="115.0" prefWidth="274.0" translateY="8.0" />
+                        <ListView fx:id="photosListDetail" onMouseClicked="#mousephotosListDetail" prefHeight="115.0" prefWidth="274.0" translateY="8.0" />
                         <HBox alignment="CENTER" prefHeight="34.0" prefWidth="273.0" spacing="10.0" translateY="20.0">
                            <children>
                               <Pane prefHeight="34.0" prefWidth="258.0">
                                  <children>
-                                    <Button layoutX="214.0" layoutY="1.0" mnemonicParsing="false" text="Edit Info" />
-                                    <Button id="copyImage"  onAction="#copyImage" layoutY="2.0" mnemonicParsing="false" text="Copy Image" />
-                                    <Button id="moveImage"  onAction="#moveImage" layoutX="96.0" layoutY="1.0" mnemonicParsing="false" text="Move Image" />
+                                    <Button id="copyImage" layoutX="14.0" layoutY="1.0" mnemonicParsing="false" onAction="#copyImage" text="Copy Image" />
+                                    <Button id="moveImage" layoutX="123.0" layoutY="1.0" mnemonicParsing="false" onAction="#moveImage" text="Move Image" />
                                  </children>
-                              </Pane> 
-                           </children>
+                              </Pane>
+                           </children> 
                         </HBox>
                      </children> 
                      <padding>
@@ -76,13 +74,15 @@
                   <Pane prefHeight="47.0" prefWidth="613.0">
                      <children>
                         <Button id="albumView" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#albumView" text="Album View" />
-                        <Button id="logOut" onAction="#logOut" layoutX="532.0" layoutY="13.0" mnemonicParsing="false" text="Logout" />
-                        <Button id="displayImage" layoutX="134.0" layoutY="11.0" mnemonicParsing="false" onAction="#displayImage" text="Display Image" />
+                        <Button id="displayImage" layoutX="120.0" layoutY="10.0" mnemonicParsing="false" onAction="#displayImage" text="Display Image" />
                      </children>
                   </Pane>
                </children>
             </HBox>
          </children>
       </VBox>
+      <Button id="logOut" layoutX="613.0" layoutY="367.0" mnemonicParsing="false" onAction="#logOut" text="Logout" />
+      <Button id="addCaption" layoutX="588.0" layoutY="174.0" mnemonicParsing="false" onAction="#addCaption" text="Add Caption" />
+      <Button id="addTags" layoutX="588.0" layoutY="216.0" mnemonicParsing="false" onAction="#addTags" text="Add tags" />
    </children>
 </AnchorPane>
